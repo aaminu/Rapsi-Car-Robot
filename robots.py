@@ -1,6 +1,7 @@
 from typing import Literal
 from lib import piconzero as pz
 from lib.hcsr04 import DistanceSensor
+from lib.led_strip import Leds
 from enum import IntEnum
 import atexit
 
@@ -33,6 +34,9 @@ class Robot:
 
         # initialize hat
         self._mh.init()
+
+        # Place Ledstrip intialitzation after hat intialization to allow proper functionality
+        self.leds = Leds(motor_hat=self._mh, output_pin=5, led_count=16)
 
     def convert_speed(self, speed: float) -> tuple[Literal[MotorDirection.FORWARD, MotorDirection.BACKWARD, MotorDirection.STOP], float]:
         """ Converts speeds and check moveement mode """
@@ -70,4 +74,5 @@ class Robot:
         self._mh.stop()
         self.left_distance_sensor.cleanup()
         self.right_distance_sensor.cleanup()
+        self.leds.clear()
         self._mh.cleanup()
