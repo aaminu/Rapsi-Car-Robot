@@ -1,6 +1,8 @@
-from typing import Literal
+from typing import Tuple, Union
 from robots import Robot
 from time import sleep
+
+intFloat = Union[int, float]
 
 
 class ObstacleAvoidanceBehaviourWithLeds:
@@ -22,7 +24,7 @@ class ObstacleAvoidanceBehaviourWithLeds:
         sleep(0.5)
         self.robot.leds.clear()
 
-    def get_speeds(self, nearest_distance: float) -> tuple[int | float, int | float, Literal[100, 250]]:
+    def get_speeds(self, nearest_distance: float) -> Tuple[intFloat, intFloat, int]:
         """Choose Speed based on Distance from a sensor"""
         if nearest_distance >= 100:
             nearest_speed = self.speed
@@ -47,14 +49,14 @@ class ObstacleAvoidanceBehaviourWithLeds:
 
         return nearest_speed, furthest_speed, delay
 
-    def distance_to_led_bar(self, distance: float | int) -> int:
+    def distance_to_led_bar(self, distance: intFloat) -> int:
         """Convert distance to number of leds on the ledstrip"""
         inverted = max(0, 1.0 - distance /
                        100)  # invert distance monitoring and limit to 1m
         led_bar = int(round(inverted * self.led_half))
         return led_bar
 
-    def display_state(self, left_distance: float | int, right_distance: float | int) -> None:
+    def display_state(self, left_distance: intFloat, right_distance: intFloat) -> None:
         # Clear first
         self.robot.leds.clear()
         # Left side

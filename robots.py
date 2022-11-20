@@ -1,5 +1,6 @@
-from typing import Literal
+from typing import Tuple
 from lib import piconzero as pz
+from typing import Union
 from lib.hcsr04 import DistanceSensor
 from lib.led_strip import Leds
 from lib.servos import Servos
@@ -11,10 +12,6 @@ class MotorDirection(IntEnum):
     FORWARD = 1
     BACKWARD = 2
     STOP = 3
-
-
-directionEnum = Literal[MotorDirection.FORWARD,
-                        MotorDirection.BACKWARD, MotorDirection.STOP]
 
 
 class Robot:
@@ -45,11 +42,11 @@ class Robot:
 
         # servos
         self._pan = Servos(self._mh, 1, min_max_degree=(
-            50, 150), start_position=103)
+            -40, 70), start_position=10)
         self._tilt = Servos(self._mh, 0, min_max_degree=(
-            55, 180), start_position=155)
+            -90, 90), start_position=0)
 
-    def convert_speed(self, speed: float) -> tuple[directionEnum, float]:
+    def convert_speed(self, speed: float) -> Tuple[MotorDirection, float]:
         """ Converts speeds and check moveement mode """
         # choose running mode
         mode = self.mvt.STOP
@@ -62,7 +59,7 @@ class Robot:
         output_speed = (abs(speed) * 127) // 100
         return mode, output_speed
 
-    def run(self, motor: int, mode: directionEnum, speed: int) -> None:
+    def run(self, motor: int, mode: MotorDirection, speed: int) -> None:
         """ Run function that determines direction """
         if mode == self.mvt.FORWARD:
             self._mh.setMotor(motor, speed)
@@ -91,9 +88,9 @@ class Robot:
     def clean_up(self) -> None:
         """ Stop both motors, distance sensor and cleanup """
         self._mh.stop()
-        self.left_distance_sensor.cleanup()
-        self.right_distance_sensor.cleanup()
-        self.leds.clear()
         self._pan.cleanup()
         self._tilt.cleanup()
+        self.leds.clear()
+        self.left_distance_sensor.cleanup()
+        self.right_distance_sensor.cleanup()
         self._mh.cleanup()

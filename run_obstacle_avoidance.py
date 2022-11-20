@@ -1,5 +1,8 @@
+from typing import Tuple, Union
 from robots import Robot
 from time import sleep
+
+intFloat = Union[int, float]
 
 
 class ObstacleAvoidance:
@@ -8,7 +11,7 @@ class ObstacleAvoidance:
         self.robot = the_robot
         self.speed = 60
 
-    def get_speeds(self, nearest_distance):
+    def get_speeds(self, nearest_distance: float) -> Tuple[intFloat, intFloat, int]:
         """Choose Speed based on Distance from a sensor"""
         if nearest_distance >= 100:
             nearest_speed = self.speed
