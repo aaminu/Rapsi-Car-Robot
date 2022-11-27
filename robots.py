@@ -42,7 +42,7 @@ class Robot:
 
         # servos
         self._pan = Servos(self._mh, 1, min_max_degree=(
-            -40, 70), start_position=10)
+            -65, 85), start_position=10)
         self._tilt = Servos(self._mh, 0, min_max_degree=(
             -90, 90), start_position=0)
 
