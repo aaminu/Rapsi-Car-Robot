@@ -3,41 +3,81 @@ import colorsys
 
 
 class Leds:
+    
+    def __init__(self, motor_hat: object,  led_count: int, output_pin: int = 5, output_mode: int=3,) -> None:
+        """Initialization Class for WS2812B Leds
 
-    def __init__(self, motor_hat: object, output_pin: int, led_count: int) -> None:
+        Args:
+            motor_hat (object): Motor
+            led_count (int): Number of leds on the strip connected to the Pin (WS2812B)
+            output_pin (int): Assigned Output pin on the hat
+            output_mode (int): Assigned Output Mode on the Hat
+
+        Notes: motor_hat should have the following methods available
+            - setOutputConfig (output, value)
+            - setPixel (Pixel, Red, Green, Blue, Update=True/False)
+            - setAllPixels(Red, Green, Blue, Update=True/False)
+            - updatePixels()
+                
+        """
         self._motor_hat = motor_hat
         self.count = led_count
-        if (output_pin >= 0) and (output_pin <= 5):
-            self._output_pin = output_pin
-            self._motor_hat.setOutputConfig(output_pin, 3)
-            self.initState = True
-        else:
-            self._output_pin = -1
-            self.initState = False
-            print("[Error]: Ledstrip intialization failed due to wrong pin selection")
+        self._motor_hat.setOutputConfig(output_pin, output_mode)
 
-    def is_valid(self, led_number: int) -> bool:
+        
+    def _is_valid(self, led_number: int) -> bool:
         return (led_number >= 0) and (led_number <= self.count)
 
     def set_one(self, led_number: int, color: tuple) -> None:
-        if self.is_valid(led_number):
+        """ Set a single Led on the strip
+
+        Args:
+            led_number (int): _description_
+            color (tuple): (Red, Green, Blue)
+        
+        Notes:
+            - Call .show() on the led object for changes to reflect
+        """
+        if self._is_valid(led_number):
             self._motor_hat.setPixel(led_number, *color, Update=False)
 
     def set_range(self, range: Union[list, range], color: tuple) -> None:
+        """Set a list of Led on the strip
+
+        Args:
+            range (Union[list, range]): List or range of Led to set on the strip
+            color (tuple): (Red, Green, Blue)
+        """
         for led in range:
             self.set_one(led, color)
 
     def set_all(self, color: tuple) -> None:
+        """Set all the Leds on the strip
+
+        Args:
+            color (tuple): (Red, Green, Blue)
+        """
         self._motor_hat.setAllPixels(*color, Update=False)
 
     def clear(self) -> None:
+        """
+        Clear all the set led. This turns off all the led on the strip
+        """
         # clears all without the need of calling show() method
         self._motor_hat.setAllPixels(0, 0, 0)
 
     def show(self) -> None:
+        """
+        Update the status of the led after calling one of the set_*(..) methods
+        """
         self._motor_hat.updatePixels()
 
     def show_rainbow(self, led_range: range):
+        """Show a Rainbow on a number of led in the strip
+
+        Args:
+            led_range (range): Range of led to display the rainbow. The longer the range, the more colors shown
+        """
         try:
             led_range = list(led_range)
             hue_step = 1.0/len(led_range)
