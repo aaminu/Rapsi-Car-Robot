@@ -1,9 +1,6 @@
 # Rapsi-Car-Robot
 A car robot based on the raspberry pi zero, 4tronix's icon zero motor hat, and couple of other sensors
 
-### Books
-This project is modeled around the instructions provide in ***Learn Robotics Programming by Danny Staple***. However, some components differ and as such some of the code in this project will differ as well.
-
 ### Components
 The compenents listt is continously updated as I add new sensors to the project. The list can be found [here](./components.md)
 
@@ -21,3 +18,6 @@ The compenents listt is continously updated as I add new sensors to the project.
 
 ### Diagrams
 In progress **
+
+### Books and Credit
+-*Learn Robotics Programming by Danny Staple*.
