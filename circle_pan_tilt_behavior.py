@@ -9,18 +9,19 @@ class CirclePanTiltBehavior:
         self.current_time = 0
         self.frames_per_circle = 50
         # divide circle into radians
-        self.radians_per_frame = (2 * math.pi)/self.frames_per_circle
+        self.radians_per_frame = (2 * math.pi) / self.frames_per_circle
         self.radius = radius
 
     def run(self):
         while True:
             frame_number = self.current_time % self.frames_per_circle
             frame_in_radian = frame_number * self.radians_per_frame
+            pan_angle = int(self.radius * math.cos(frame_in_radian))
+            tilt_angle = int(self.radius * math.sin(frame_in_radian))
 
             # Draw Cirlce
-            self.robot.set_pan(self.radius * math.cos(frame_in_radian))
-            self.robot.set_tilt(self.radius * math.sin(frame_in_radian))
-
+            self.robot.set_pan(pan_angle)
+            self.robot.set_tilt(tilt_angle)
             sleep(0.05)
             self.current_time += 1
 

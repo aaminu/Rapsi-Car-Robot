@@ -10,7 +10,7 @@ The compenents listt is continously updated as I add new sensors to the project.
 3. Copy the project folder to the pi using sftp
 4. SSH into the pi and navigate to the folder location
     > if this is your first time, install the dependencies by running the following in your terminal: 
-    - `sudo apt-get install -y python3-pip python3-smbus ic2-tools`
+    - `sudo apt-get install -y python3-pip python3-smbus i2c-tools`
     - `pip3 install -r requirements.txt`
     - enable the i2c interface. [Here](https://nl.mathworks.com/help/supportpkg/raspberrypiio/ref/enablei2c.html) is a simple online tutorial for that.
 5. All the modules provide in the *lib* folder can be tested by simply running: `python3 <Module-Name>.py`
